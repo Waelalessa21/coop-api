@@ -11,22 +11,15 @@ class WebApp {
 
     async loadSubmissions() {
         try {
-            const response = await fetch('../../data/submissions.json');
-            const data = await response.json();
+            const response = await fetch('/api/v1/submissions');
+            const submissions = await response.json();
             
-            const submissions = Object.entries(data).map(([id, submission]) => ({
-                id,
-                name: submission.name,
-                email: submission.email,
-                phone: submission.phone,
-                major: submission.major,
-                submissionDate: submission.submissionDate,
-                status: submission.status,
-                cvUrl: submission.cvUrl,
-                additional: submission.additional
-            }));
+            const dataMap = {};
+            submissions.forEach(submission => {
+                dataMap[submission.id] = submission;
+            });
             
-            this.submissionsData = data;
+            this.submissionsData = dataMap;
             this.renderSubmissions(submissions);
         } catch (error) {
             console.error('Error loading submissions:', error);
@@ -54,47 +47,48 @@ class WebApp {
         `).join('');
     }
 
-    showSubmissionDetails(submissionId) {
-        const submission = this.submissionsData[submissionId];
-        
-        if (!submission) {
-            console.error('Submission not found');
-            return;
+    async showSubmissionDetails(submissionId) {
+        try {
+            const response = await fetch(`/api/v1/submissions/${submissionId}`);
+            const submission = await response.json();
+            
+            this.renderSubmissionDetails(submission);
+            document.getElementById('submissionModal').style.display = 'block';
+        } catch (error) {
+            console.error('Error loading submission details:', error);
         }
-        
-        this.renderSubmissionDetails(submission);
-        document.getElementById('submissionModal').style.display = 'block';
     }
 
     renderSubmissionDetails(submission) {
         const container = document.getElementById('submissionDetails');
+        const data = submission.data || submission;
         
         container.innerHTML = `
             <h2>تفاصيل المتقدم</h2>
             <div class="detail-item">
                 <div class="detail-label">الاسم</div>
-                <div class="detail-value">${submission.name}</div>
+                <div class="detail-value">${data.name}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">البريد الإلكتروني</div>
-                <div class="detail-value">${submission.email}</div>
+                <div class="detail-value">${data.email}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">رقم الهاتف</div>
-                <div class="detail-value">${submission.phone}</div>
+                <div class="detail-value">${data.phone}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">التخصص</div>
-                <div class="detail-value">${submission.major}</div>
+                <div class="detail-value">${data.major}</div>
             </div>
             <div class="detail-item">
                 <div class="detail-label">معلومات إضافية</div>
-                <div class="detail-value">${submission.additional || 'لا توجد'}</div>
+                <div class="detail-value">${data.additional || 'لا توجد'}</div>
             </div>
-            ${submission.cvUrl ? `
+            ${data.cvUrl ? `
                 <div class="detail-item">
                     <div class="detail-label">السيرة الذاتية</div>
-                    <a href="../../${submission.cvUrl}" class="cv-link" target="_blank">عرض السيرة الذاتية</a>
+                    <a href="${data.cvUrl}" class="cv-link" target="_blank">عرض السيرة الذاتية</a>
                 </div>
             ` : ''}
         `;
