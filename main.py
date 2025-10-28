@@ -17,10 +17,10 @@ app.add_middleware(
 )
 
 app.include_router(submission_router, prefix="/api/v1")
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 templates = Jinja2Templates(directory="web/templates")
 app.mount("/static", StaticFiles(directory="web/static"), name="static")
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
