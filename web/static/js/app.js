@@ -32,7 +32,12 @@ class WebApp {
         const container = document.getElementById('submissionsList');
         
         if (submissions.length === 0) {
-            container.innerHTML = '<div class="loading">لا توجد طلبات</div>';
+            container.innerHTML = `
+                <div class="no-submissions">
+                    <img src="/static/assets/images/noRequest.png" alt="No requests" class="no-request-image">
+                    <p class="no-submissions-text">لا يوجــد طــلبات تقديم حتى الان</p>
+                </div>
+            `;
             return;
         }
 

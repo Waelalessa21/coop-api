@@ -255,6 +255,31 @@ header h1 {
     padding: 40px;
 }
 
+.no-submissions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.no-request-image {
+    max-width: 100%;
+    height: auto;
+    width: 300px;
+    margin-bottom: 30px;
+    opacity: 0.8;
+}
+
+.no-submissions-text {
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin: 0;
+}
+
 .modal {
     display: none;
     position: fixed;
@@ -368,6 +393,15 @@ header h1 {
         font-size: 0.85rem;
     }
     
+    .no-request-image {
+        width: 250px;
+        margin-bottom: 20px;
+    }
+    
+    .no-submissions-text {
+        font-size: 1.2rem;
+    }
+    
     .modal-content {
         margin: 10% auto;
         padding: 20px;
@@ -387,5 +421,18 @@ header h1 {
     
     .header-description {
         font-size: 0.9rem;
+    }
+    
+    .no-request-image {
+        width: 200px;
+        margin-bottom: 15px;
+    }
+    
+    .no-submissions-text {
+        font-size: 1rem;
+    }
+    
+    .no-submissions {
+        padding: 40px 15px;
     }
 }
