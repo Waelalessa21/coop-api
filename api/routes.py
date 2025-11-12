@@ -1,12 +1,15 @@
 from fastapi import APIRouter, HTTPException, status, UploadFile, File
 from models.submission import SubmissionData
+from models.opportunity import OpportunityData
 from services.submission_service import SubmissionService
+from services.opportunity_service import OpportunityService
 from typing import Dict, Any, List
 import uuid
 import os
 
 submission_router = APIRouter()
 submission_service = SubmissionService()
+opportunity_service = OpportunityService()
 
 UPLOAD_DIR = "uploads"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
@@ -36,6 +39,35 @@ async def get_submission(submission_id: str):
 @submission_router.get("/submissions", response_model=List[Dict[str, Any]])
 async def get_all_submissions():
     result = submission_service.get_all_submissions()
+    return result
+
+
+@submission_router.post("/opportunities", response_model=Dict[str, Any])
+async def create_opportunity(opportunity_data: OpportunityData):
+    try:
+        result = opportunity_service.create_opportunity(opportunity_data)
+        return result
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Failed to create opportunity: {str(e)}"
+        )
+
+
+@submission_router.get("/opportunities/{opportunity_id}", response_model=Dict[str, Any])
+async def get_opportunity(opportunity_id: str):
+    result = opportunity_service.get_opportunity(opportunity_id)
+    if "error" in result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=result["error"]
+        )
+    return result
+
+
+@submission_router.get("/opportunities", response_model=List[Dict[str, Any]])
+async def get_all_opportunities():
+    result = opportunity_service.get_all_opportunities()
     return result
 
 @submission_router.post("/upload", response_model=Dict[str, Any])

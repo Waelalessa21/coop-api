@@ -13,9 +13,45 @@
             <h1>التدريب مع ســـاير</h1>
             <p class="header-description">قائمة اعضاء ســـاير المحتملين</p>
         </header>
-        
-        <div class="submissions-list" id="submissionsList">
-            <div class="loading">جاري التحميل...</div>
+
+        <div class="tab-container">
+            <div class="tab-bar">
+                <button class="tab-button active" data-target="submissionsSection">طلبات التوظيف</button>
+                <button class="tab-button" data-target="opportunitiesSection">مجالات التوظيف</button>
+            </div>
+        </div>
+
+        <div class="tab-content" id="submissionsSection">
+            <div class="submissions-list" id="submissionsList">
+                <div class="loading">جاري التحميل...</div>
+            </div>
+        </div>
+
+        <div class="tab-content hidden" id="opportunitiesSection">
+            <div class="opportunity-form-card">
+                <h2 class="section-title">إنشاء مجال جديد</h2>
+                <p class="section-description">يمكنك إضافة مجالات وفرص عمل جديدة ليتم عرضها للمهتمين.</p>
+                <form id="opportunityForm" class="opportunity-form">
+                    <div class="form-group">
+                        <label for="opportunityField">المجال</label>
+                        <input type="text" id="opportunityField" name="field" placeholder="مثال: تصميم تجربة المستخدم" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="opportunityDetails">تفاصيل المجال</label>
+                        <textarea id="opportunityDetails" name="description" placeholder="اكتب وصفاً موجزاً عن المجال" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="opportunityTasks">المهام المتوقعة</label>
+                        <textarea id="opportunityTasks" name="expected_tasks" placeholder="اذكر أبرز المهام والمسؤوليات" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="primary-button">حفظ المجال</button>
+                    <div class="form-status" id="opportunityFormStatus"></div>
+                </form>
+            </div>
+
+            <div class="opportunities-list" id="opportunitiesList">
+                <div class="loading">جاري تحميل المجالات...</div>
+            </div>
         </div>
     </div>
 
