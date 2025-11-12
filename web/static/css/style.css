@@ -174,12 +174,13 @@ header h1 {
     position: relative;
     transition: var(--transition);
     font-weight: 500;
+    margin-bottom: -2px;
 }
 
 .tab-button::after {
     content: '';
     position: absolute;
-    bottom: -2px;
+    bottom: 0;
     right: 0;
     left: 0;
     height: 2px;
