@@ -70,6 +70,29 @@ async def get_all_opportunities():
     result = opportunity_service.get_all_opportunities()
     return result
 
+
+@submission_router.delete("/submissions/{submission_id}", response_model=Dict[str, Any])
+async def delete_submission(submission_id: str):
+    result = submission_service.delete_submission(submission_id)
+    if "error" in result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=result["error"]
+        )
+    return result
+
+
+@submission_router.delete("/opportunities/{opportunity_id}", response_model=Dict[str, Any])
+async def delete_opportunity(opportunity_id: str):
+    result = opportunity_service.delete_opportunity(opportunity_id)
+    if "error" in result:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=result["error"]
+        )
+    return result
+
+
 @submission_router.post("/upload", response_model=Dict[str, Any])
 async def upload_file(file: UploadFile = File(...)):
     try:

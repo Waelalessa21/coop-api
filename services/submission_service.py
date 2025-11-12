@@ -52,6 +52,18 @@ class SubmissionService:
             })
         return submissions_list
     
+    def delete_submission(self, submission_id: str) -> Dict[str, Any]:
+        if submission_id not in self.submissions:
+            return {"error": "Submission not found"}
+        
+        del self.submissions[submission_id]
+        self._save_data()
+        
+        return {
+            "status": "success",
+            "message": "Submission deleted successfully"
+        }
+    
     def _load_data(self):
         if os.path.exists(self.data_file):
             try:

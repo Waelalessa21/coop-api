@@ -48,6 +48,18 @@ class OpportunityService:
                 "created_at": opportunity.created_at.isoformat()
             })
         return opportunities_list
+    
+    def delete_opportunity(self, opportunity_id: str) -> Dict[str, Any]:
+        if opportunity_id not in self.opportunities:
+            return {"error": "Opportunity not found"}
+        
+        del self.opportunities[opportunity_id]
+        self._save_data()
+        
+        return {
+            "status": "success",
+            "message": "Opportunity deleted successfully"
+        }
 
     def _load_data(self):
         if os.path.exists(self.data_file):

@@ -17,7 +17,7 @@
         <div class="tab-container">
             <div class="tab-bar">
                 <button class="tab-button active" data-target="submissionsSection">طلبات التدريب</button>
-                <button class="tab-button" data-target="opportunitiesSection">إضافة مجال</button>
+                <button class="tab-button" data-target="opportunitiesSection">إضافة شاغر</button>
             </div>
         </div>
 
@@ -57,6 +57,17 @@
         <div class="modal-content">
             <span class="close" id="closeModal">&times;</span>
             <div id="submissionDetails"></div>
+        </div>
+    </div>
+
+    <div class="modal" id="confirmDeleteModal">
+        <div class="modal-content confirm-delete-content">
+            <h3 class="confirm-title">تأكيد الحذف</h3>
+            <p class="confirm-message" id="confirmMessage">هل أنت متأكد من حذف هذا العنصر؟</p>
+            <div class="confirm-actions">
+                <button class="confirm-button delete-confirm" id="confirmDeleteBtn">حذف</button>
+                <button class="confirm-button cancel-confirm" id="cancelDeleteBtn">إلغاء</button>
+            </div>
         </div>
     </div>
 

@@ -3,6 +3,7 @@ class WebApp {
         this.submissionsData = null;
         this.opportunitiesData = null;
         this.currentTab = 'submissionsSection';
+        this.deleteCallback = null;
         this.init();
     }
 
@@ -99,6 +100,11 @@ class WebApp {
             .map(
                 (submission) => `
             <div class="submission-card" onclick="webApp.showSubmissionDetails('${submission.id}')">
+                <div class="delete-icon" onclick="event.stopPropagation(); webApp.confirmDelete('submission', '${submission.id}', '${submission.name}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
+                </div>
                 <div class="avatar">${submission.name.charAt(0).toUpperCase()}</div>
                 <div class="submission-info">
                     <div class="submission-name">${submission.name}</div>
@@ -122,6 +128,11 @@ class WebApp {
             .map(
                 (opportunity) => `
             <div class="opportunity-card">
+                <div class="delete-icon" onclick="webApp.confirmDelete('opportunity', '${opportunity.id}', '${opportunity.field}')">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                        <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+                    </svg>
+                </div>
                 <div class="opportunity-field">${opportunity.field}</div>
                 <div class="opportunity-description">
                     <strong>تفاصيل المجال</strong>
@@ -192,6 +203,9 @@ class WebApp {
     setupEventListeners() {
         const closeModalButton = document.getElementById('closeModal');
         const submissionModal = document.getElementById('submissionModal');
+        const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
 
         if (closeModalButton) {
             closeModalButton.onclick = () => {
@@ -199,9 +213,30 @@ class WebApp {
             };
         }
 
+        if (cancelDeleteBtn) {
+            cancelDeleteBtn.onclick = () => {
+                confirmDeleteModal.style.display = 'none';
+                this.deleteCallback = null;
+            };
+        }
+
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.onclick = async () => {
+                if (this.deleteCallback) {
+                    await this.deleteCallback();
+                    this.deleteCallback = null;
+                }
+                confirmDeleteModal.style.display = 'none';
+            };
+        }
+
         window.onclick = (event) => {
             if (event.target === submissionModal) {
                 submissionModal.style.display = 'none';
+            }
+            if (event.target === confirmDeleteModal) {
+                confirmDeleteModal.style.display = 'none';
+                this.deleteCallback = null;
             }
         };
     }
@@ -290,6 +325,55 @@ class WebApp {
             rejected: 'مرفوض',
         };
         return statusMap[status] || status;
+    }
+
+    confirmDelete(type, id, name) {
+        const modal = document.getElementById('confirmDeleteModal');
+        const message = document.getElementById('confirmMessage');
+        
+        if (type === 'submission') {
+            message.textContent = `هل أنت متأكد من حذف طلب "${name}"؟`;
+            this.deleteCallback = () => this.deleteSubmission(id);
+        } else if (type === 'opportunity') {
+            message.textContent = `هل أنت متأكد من حذف شاغر "${name}"؟`;
+            this.deleteCallback = () => this.deleteOpportunity(id);
+        }
+        
+        modal.style.display = 'block';
+    }
+
+    async deleteSubmission(submissionId) {
+        try {
+            const response = await fetch(`/api/v1/submissions/${submissionId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('فشل حذف الطلب');
+            }
+
+            await this.loadSubmissions();
+        } catch (error) {
+            console.error('Error deleting submission:', error);
+            alert('حدث خطأ أثناء حذف الطلب');
+        }
+    }
+
+    async deleteOpportunity(opportunityId) {
+        try {
+            const response = await fetch(`/api/v1/opportunities/${opportunityId}`, {
+                method: 'DELETE',
+            });
+
+            if (!response.ok) {
+                throw new Error('فشل حذف الشاغر');
+            }
+
+            await this.loadOpportunities();
+        } catch (error) {
+            console.error('Error deleting opportunity:', error);
+            alert('حدث خطأ أثناء حذف الشاغر');
+        }
     }
 }
 
