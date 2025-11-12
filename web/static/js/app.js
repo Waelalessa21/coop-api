@@ -114,12 +114,7 @@ class WebApp {
         const container = document.getElementById('opportunitiesList');
 
         if (!opportunities || opportunities.length === 0) {
-            container.innerHTML = `
-                <div class="no-submissions">
-                    <img src="/static/assets/images/noRequest.png" alt="No opportunities" class="no-request-image">
-                    <p class="no-submissions-text">لا توجد مجالات توظيف حالياً</p>
-                </div>
-            `;
+            container.innerHTML = '';
             return;
         }
 
