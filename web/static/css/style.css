@@ -178,7 +178,7 @@ header h1 {
 .tab-button {
     background: transparent;
     border: none;
-    padding: 8px 4px 12px 4px;
+    padding: 6px 4px 10px 4px;
     font-size: 1.1rem;
     color: var(--text-secondary);
     cursor: pointer;
@@ -190,11 +190,10 @@ header h1 {
 .tab-button::after {
     content: '';
     position: absolute;
-    bottom: -14px;
-    right: 50%;
-    transform: translateX(50%);
-    width: 100%;
-    height: 4px;
+    bottom: -2px;
+    right: 0;
+    left: 0;
+    height: 2px;
     background: transparent;
     transition: var(--transition);
     border-radius: 999px;
