@@ -17,7 +17,8 @@
         <div class="tab-container">
             <div class="tab-bar">
                 <button class="tab-button active" data-target="submissionsSection">طلبات التدريب</button>
-                <button class="tab-button" data-target="opportunitiesSection">إضافة شاغر</button>
+                <button class="tab-button" data-target="currentOpportunitiesSection">الشواغر الحالية</button>
+                <button class="tab-button" data-target="addOpportunitySection">إضافة شاغر</button>
             </div>
         </div>
 
@@ -27,7 +28,13 @@
             </div>
         </div>
 
-        <div class="tab-content hidden" id="opportunitiesSection">
+        <div class="tab-content hidden" id="currentOpportunitiesSection">
+            <div class="opportunities-list" id="opportunitiesList">
+                <div class="loading">جاري تحميل الشواغر...</div>
+            </div>
+        </div>
+
+        <div class="tab-content hidden" id="addOpportunitySection">
             <div class="opportunity-form-card">
                 <form id="opportunityForm" class="opportunity-form">
                     <div class="form-group">
@@ -42,13 +49,9 @@
                         <label for="opportunityTasks">المهام المتوقعة</label>
                         <textarea id="opportunityTasks" name="expected_tasks" placeholder="اذكر أبرز المهام والمسؤوليات" rows="4" required></textarea>
                     </div>
-                    <button type="submit" class="primary-button">حفظ المجال</button>
+                    <button type="submit" class="primary-button">حفظ الشاغر</button>
                     <div class="form-status" id="opportunityFormStatus"></div>
                 </form>
-            </div>
-
-            <div class="opportunities-list" id="opportunitiesList">
-                <div class="loading">جاري تحميل المجالات...</div>
             </div>
         </div>
     </div>

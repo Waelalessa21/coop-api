@@ -32,7 +32,7 @@ class WebApp {
                     content.classList.toggle('hidden', content.id !== target);
                 });
 
-                if (target === 'opportunitiesSection' && !this.opportunitiesData) {
+                if (target === 'currentOpportunitiesSection' && !this.opportunitiesData) {
                     this.loadOpportunities();
                 }
             });
@@ -282,7 +282,7 @@ class WebApp {
 
                 await this.loadOpportunities();
                 form.reset();
-                this.updateFormStatus(statusElement, 'تم حفظ المجال بنجاح', 'success');
+                this.updateFormStatus(statusElement, 'تم حفظ الشاغر بنجاح', 'success');
             } catch (error) {
                 console.error('Error creating opportunity:', error);
                 this.updateFormStatus(statusElement, error.message || 'حدث خطأ غير متوقع', 'error');
